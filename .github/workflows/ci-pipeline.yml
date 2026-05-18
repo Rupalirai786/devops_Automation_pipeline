@@ -9,7 +9,7 @@ jobs:
   runs-on: ubuntu:latest
   steps:
    - name: cloning
-     run: git clone https://github.com/Rupalirai786/devops_Automation_pipeline
+     uses: actions/checkout@v4
    - name: generating image from dockerfile
      run: docker build -t img .
 	
