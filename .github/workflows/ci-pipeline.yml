@@ -11,3 +11,5 @@ jobs:
      uses: actions/checkout@v4
    - name: generating image from dockerfile
      run: docker build -t img .
+   - name: running container
+     run: docker run --name cont img:latest   
