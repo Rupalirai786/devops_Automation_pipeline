@@ -11,6 +11,6 @@ jobs:
    - name: cloning
      run: git clone https://github.com/Rupalirai786/devops_Automation_pipeline
    - name: generating image from dockerfile
-     run: docker build -t image:latest .
+     run: docker build -t img .
 	
   
