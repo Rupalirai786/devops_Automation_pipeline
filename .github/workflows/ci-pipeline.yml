@@ -3,13 +3,14 @@ on:
  push:
   branches:
   - main
-runs-on: ubuntu:latest
+
 jobs:
  build-job:
+  runs-on: ubuntu:latest
   steps:
    - name: cloning
-     uses: git clone https://github.com/Rupalirai786/devops_Automation_pipeline
+     run: git clone https://github.com/Rupalirai786/devops_Automation_pipeline
    - name: generating image from dockerfile
-     uses: docker build -t image:latest .
+     run: docker build -t image:latest .
 	
   
