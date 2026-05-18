@@ -1,0 +1,15 @@
+name:automationscript
+on:
+ push:
+  branches:
+  - main
+runs-on: ubuntu:latest
+jobs:
+ steps:
+  - name:cloning
+    uses: git clone https://github.com/Rupalirai786/devops_Automation_pipeline
+ 
+  - name: generating image from dockerfile
+    uses: docker build -t image:latest .
+	
+  
