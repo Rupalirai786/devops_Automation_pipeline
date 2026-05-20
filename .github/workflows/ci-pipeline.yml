@@ -5,7 +5,7 @@ on:
   - main
 jobs:
  job_one:
-  name: Build job:
+   name: Build job
    runs-on: ubuntu-latest
    steps:
     - name: cloning
@@ -15,7 +15,7 @@ jobs:
     - name: running container
       run: docker run --name cont img:latest   
  job_two:
-  name: pushing_image:
+   name: pushing_image
    runs-on: ubuntu-latest 
    steps: 
     - name: cloning repo
