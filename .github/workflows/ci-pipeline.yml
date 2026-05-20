@@ -28,5 +28,7 @@ jobs:
        password: ${{ secrets.GITHUB_TOKEN }}
     - name: building and pushing image 
       run: | 
-           docker build -t ghcr.io/rupalirai786/img:latest .  
-           docker push ghcr.io/rupalirai786/img:latest
+           IMAGE_ID=ghcr.io/rupalirai786/img:latest
+           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-Z]')           .  
+           docker build -t $IMAGE_ID .
+           docker push $IMAGE_ID
