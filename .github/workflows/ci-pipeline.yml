@@ -17,6 +17,9 @@ jobs:
  job_two:
    name: pushing_image
    runs-on: ubuntu-latest 
+   permissions:
+    content: read
+    packages: write
    steps: 
     - name: cloning repo
       uses: actions/checkout@v4
