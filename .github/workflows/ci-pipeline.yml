@@ -29,4 +29,4 @@ jobs:
     - name: building and pushing image 
       run: | 
            docker build -t ghcr.io/rupalirai786/img:latest .  
-           docker push ghcr.io/rupalirai786/img.latest
+           docker push ghcr.io/rupalirai786/img:latest
