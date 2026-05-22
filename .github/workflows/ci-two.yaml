@@ -36,26 +36,23 @@ jobs:
            docker build -t $IMAGE_ID .
            docker push $IMAGE_ID
  job_three:
-    name: trivy scanner 
-    runs-on: ubuntu-latest
-	permissions:
-     contents: read
-     packages: write
-    steps:
-     - name: installing trivy
-       run: |
+   name: trivy scanner 
+   runs-on: ubuntu-latest
+   permissions:
+      contents: read
+      packages: write
+   steps:
+    - name: installing trivy
+      run: |
             sudo apt-get install wget gnupg
             wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
             echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
             sudo apt-get update
             sudo apt-get install trivy 
-      - name: scannign image
-	    if: trivy --exit-code 1 image $IMAGE_ID
-		run: |
-		     IMAGE_ID=ghcr.io/rupalirai786/img:latest
-             IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')             
-             docker build -t $IMAGE_ID .
-             docker push $IMAGE_ID
-			 
-
-             
+    - name: scannign image
+	  if: trivy --exit-code 1 image $IMAGE_ID
+	  run: |
+		    IMAGE_ID=ghcr.io/rupalirai786/img:latest
+            IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')             
+            docker build -t $IMAGE_ID .
+            docker push $IMAGE_ID
