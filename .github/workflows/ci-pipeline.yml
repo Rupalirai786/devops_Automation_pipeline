@@ -46,5 +46,5 @@ jobs:
             echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
             sudo apt-get update
             sudo apt-get install trivy 
-            trivy --exit-code 1 image $IMAGE_ID
+            trivy --exit-code 1 image ghcr.io/rupalirai786/img:latest
              
