@@ -1,0 +1,59 @@
+name: automationscript
+on:
+ push:
+  branches:
+  - main
+jobs:
+ job_one:
+   name: Build job
+   runs-on: ubuntu-latest
+   steps:
+    - name: cloning
+      uses: actions/checkout@v4
+    - name: generating image from dockerfile
+      run: docker build -t img .
+    - name: running container
+      run: docker run --name cont img:latest   
+ job_two:
+   name: pushing_image
+   runs-on: ubuntu-latest 
+   permissions:
+   steps: 
+    - name: cloning repo
+      uses: actions/checkout@v4
+    - name: logging in to registry
+      uses: docker/login-action@v3
+      with: 
+       registry: ghcr.io
+       username: ${{ github.actor }}
+       password: ${{ secrets.GITHUB_TOKEN }}
+    - name: building and pushing image 
+      run: | 
+           IMAGE_ID=ghcr.io/rupalirai786/img:latest
+           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')             
+           docker build -t $IMAGE_ID .
+           docker push $IMAGE_ID
+ job_three:
+    name: trivy scanner 
+    runs-on: ubuntu-latest
+	permissions:
+     contents: read
+     packages: write
+    steps:
+     - name: installing trivy
+       run: |
+            sudo apt-get install wget gnupg
+            wget -qO - https://aquasecurity.github.io/trivy-repo/deb/public.key | gpg --dearmor | sudo tee /usr/share/keyrings/trivy.gpg > /dev/null
+            echo "deb [signed-by=/usr/share/keyrings/trivy.gpg] https://aquasecurity.github.io/trivy-repo/deb generic main" | sudo tee -a /etc/apt/sources.list.d/trivy.list
+            sudo apt-get update
+            sudo apt-get install trivy 
+      - name: scannign image
+	    if: trivy --exit-code 1 image $IMAGE_ID
+		run: |
+		     IMAGE_ID=ghcr.io/rupalirai786/img:latest
+             IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')             
+             docker build -t $IMAGE_ID .
+             docker push $IMAGE_ID
+			 
+
+             
