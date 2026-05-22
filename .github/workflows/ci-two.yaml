@@ -4,7 +4,7 @@ on:
   branches:
   - main
 jobs:
-   job_one:
+  job_one:
    name: trivy scanner plus image pushing plus running container
    runs-on: ubuntu-latest
    permissions:
