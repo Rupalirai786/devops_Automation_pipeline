@@ -4,19 +4,8 @@ on:
   branches:
   - main
 jobs:
- job_one:
-   name: Build job
-   runs-on: ubuntu-latest
-   steps:
-    - name: cloning
-      uses: actions/checkout@v4
-    - name: generating image from dockerfile
-      run: docker build -t img .
-    - name: running container
-      run: docker run --name cont img:latest   
-
- job_two:
-   name: trivy scanner plus image pushing 
+   job_one:
+   name: trivy scanner plus image pushing plus running container
    runs-on: ubuntu-latest
    permissions:
       contents: read
@@ -39,7 +28,7 @@ jobs:
        username: ${{ github.actor }}
        password: ${{ secrets.GITHUB_TOKEN }}
             
-    - name: scanning image
+    - name: scanning image and running container
       run: |  
             IMAGE_ID=ghcr.io/rupalirai786/img:latest
             IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]') 
@@ -47,4 +36,6 @@ jobs:
             trivy image --exit-code 1 $IMAGE_ID
             if [$? -eq 0]; then
              docker push $IMAGE_ID
+             docker run --name cont $IMAGE_ID
             fi 
+    
