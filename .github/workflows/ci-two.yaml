@@ -39,14 +39,14 @@ jobs:
        username: ${{ github.actor }}
        password: ${{ secrets.GITHUB_TOKEN }}
             
-    - name: scannign image
+    - name: scanning image
       run: |  
-           IMAGE_ID=ghcr.io/rupalirai786/img:latest
-           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]') 
-           docker build -t $IMAGE_ID .
-           trivy image --exit-code 1 $IMAGE_ID
-           if [$? -eq 0]; then
-            docker push $IMAGE_ID
-           fi
+            IMAGE_ID=ghcr.io/rupalirai786/img:latest
+            IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]') 
+            docker build -t $IMAGE_ID .
+            trivy image --exit-code 1 $IMAGE_ID
+            if [$? -eq 0]; then
+             docker push $IMAGE_ID
+            fi
 
 	        
