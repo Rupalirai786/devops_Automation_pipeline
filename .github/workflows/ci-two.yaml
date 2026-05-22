@@ -47,6 +47,4 @@ jobs:
             trivy image --exit-code 1 $IMAGE_ID
             if [$? -eq 0]; then
              docker push $IMAGE_ID
-            fi
-
-	        
+            fi 
