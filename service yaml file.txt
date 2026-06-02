@@ -1,0 +1,162 @@
+***************Pvc claim************8
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: claiming
+spec:
+ accessModes:
+ - ReadWriteOnce
+ resources:
+  requests:
+   storage: 1Gi
+ storageClassName: local-path
+
+****************pv creating file*********** 
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+ name: creating
+spec:
+ accessModes:
+ - ReadWriteOnce
+ capacity:
+  storage: 1Gi
+ hostPath:
+  path: /tmp/pv/
+ storageClassName: local-path
+
+
+*****************1st pod file******************
+apiVersion: v1
+kind: Pod
+metadata:
+ name: podd
+spec:
+ containers:
+ - name: conta
+   image: alpine
+   command: ["sleep"]
+   args: ["3600"]
+   volumeMounts:
+    - name: vol
+      mountPath: /mnt/data
+ volumes:
+ - persistentVolumeClaim:
+    claimName: claiming
+   name: vol
+
+******************second vpod file********************
+apiVersion: v1
+kind: Pod
+metadata:
+ name: podd
+spec:
+ containers:
+ - name: conta
+   image: alpine
+   command: ["sleep"]
+   args: ["3600"]
+   volumeMounts:
+    - name: vol
+      mountPath: /mnt/data
+ volumes:
+ - persistentVolumeClaim:
+    claimName: claiming
+   name: vol
+   
+********************************************************8
+After creating second pod: entered to container and found the file created using 1st pod.pfb commands below:
+k exec -it reader -- /bin/sh
+/ # ls
+bin    dev    etc    home   lib    media  mnt    opt    proc   root   run    sbin   srv    sys    tmp    usr    var
+/ # cd mnt
+/mnt # ls
+data
+/mnt # cd data
+/mnt/data # ls
+text.txt
+/mnt/data # vi text.txt
+
+
+
+________________________________________________________________________________________________________________________________________
+
+SERVICE CREATION - NODEPORT AND ACCESSING IT 
+
+******************************NodePort file********************
+apiVersion: v1
+kind: Service
+metadata:
+ name: backend
+spec:
+ type: NodePort
+ selector:
+  app: backend
+ ports:
+  - port: 80
+    targetPort: 80
+
+
+working fromnode ip : 
+curl http://172.30.1.2:30001
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+<h1>Welcome to nginx!</h1>
+<p>If you see this page, nginx is successfully installed and working.
+Further configuration is required for the web server, reverse proxy, 
+API gateway, load balancer, content cache, or other features.</p>
+
+<p>For online documentation and support please refer to
+<a href="https://nginx.org/">nginx.org</a>.<br/>
+To engage with the community please visit
+<a href="https://community.nginx.org/">community.nginx.org</a>.<br/>
+For enterprise grade support, professional services, additional 
+security features and capabilities please refer to
+<a href="https://f5.com/nginx">f5.com/nginx</a>.</p>
+
+<p><em>Thank you for using nginx.</em></p>
+</body>
+</html>
+
+
+**********************************************************88
+For task 3.1:
+                             node.kubernetes.io/unreachable:NoExecute op=Exists for 300s
+Events:
+  Type     Reason     Age   From               Message
+  ----     ------     ----  ----               -------
+  Normal   Scheduled  18s   default-scheduler  Successfully assigned default/pod to node01
+  Normal   Pulling    17s   kubelet            spec.containers{pod}: Pulling image "ngin"
+  Warning  Failed     10s   kubelet            spec.containers{pod}: Failed to pull image "ngin": rpc error: code = NotFound desc = failed to pull and unpack image "docker.io/library/ngin:latest": failed to resolve image: docker.io/library/ngin:latest: not found
+  Warning  Failed     10s   kubelet            spec.containers{pod}: Error: ErrImagePull
+  Normal   BackOff    10s   kubelet            spec.containers{pod}: Back-off pulling image "ngin"
+  Warning  Failed     10s   kubelet            spec.containers{pod}: Error: ImagePullBackOff
+
+For task 3.2:
+Added this in yaml file for alpine container:
+spec:
+  containers:
+  - image: alpine
+    imagePullPolicy: Always
+    name: pod
+    resources: {}
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-c29j7
+      readOnly: true
+    command: ["sleep"]
+    args: ["3600"]
+
+-	Now container is in running state.
+*************************************************************************

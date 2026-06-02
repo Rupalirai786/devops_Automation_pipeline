@@ -1,0 +1,39 @@
+******************DOCKERFILE****************
+1. made a python file saying print("hi")
+
+then dockerfile:
+
+FROM alpine
+Run apk add python3 - ##this is executed while image formation only. it is not executed when runnong container.
+COPY python.txt /
+CMD python3 python.txt &&  sleep 120 - ##becuase cmd is executed once once , in case of multiple only last is executed, thus combining two commds.
+
+*************COMMANDS USED TO BUILD IMAGE , RUN CONTAINER ETC.************************88
+
+1.  docker exec -it 080b83a99011e39915387bfcda0c8768f6fedb3c4c59356d5b8278751d57e424  /bin/sh  -----##used to enter inside container##
+2.  docker build -it imgupdated .  ---###used to build image , imgupdated=imagename , . = search fpr Dockerfile in current directory####
+3.  docker run --name contthree imageupdatedthree  --##used to run a container##
+4.  k exec -it pod -- /bin/sh --#used to enter inside a container of a pod##
+5.  k run pod --image img -- ##used to run a pod##
+
+____________________________________________________________________________________________
+
+then inside git repository where pyhton and dockerfile is preset, created .gitrhub ->workflows -> ci-pipeline.yaml file .
+
+name: automationscript
+on:
+ push:
+  branches:
+  - main
+jobs:
+ build-job:
+  runs-on: ubuntu-latest
+  steps:
+   - name: cloning
+     uses: actions/checkout@v4
+   - name: generating image from dockerfile
+     run: docker build -t img .
+   - name: running container
+     run: docker run --name cont img:latest  
+
+go to github it shows how automatically it is running.

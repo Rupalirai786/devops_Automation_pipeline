@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: dep
+ labels:
+  app: backend
+spec:
+ replicas: 3
+ selector:
+  matchLabels:
+   app: backend
+ template:
+  metadata:
+   name: cont
+   labels:
+    app: backend
+  spec:
+   containers:
+    - name: container
+      image: ghcr.io/rupalirai786/img:latest
+---
+apiVersion: v1
+kind: Service
+metadata:
+ name: serv
+ labels:
+  app: backend
+spec:
+  type: NodePort
+  ports:
+  - targetPort: 8080
+    port: 8080
+  selector:
+    app: backend
