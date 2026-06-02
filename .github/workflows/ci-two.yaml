@@ -36,6 +36,14 @@ jobs:
             trivy image --exit-code 1 $IMAGE_ID
             if [$? -eq 0]; then
              docker push $IMAGE_ID
-             docker run --name cont $IMAGE_ID
+             #docker run --name cont $IMAGE_ID
             fi 
+    - name: runnning job through kubernetes
+      run: | 
+           mkdir ~/.Kube 
+           echo ${{SECRETS.KUBE_CONFIG}} > ~/.Kube/config
+           k apply -f kubernetesdeploymentfile.yaml
+           k get deployments
+           
+      
     
