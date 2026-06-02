@@ -40,8 +40,8 @@ jobs:
             fi 
     - name: runnning job through kubernetes
       run: | 
-           mkdir ~/.Kube 
-           echo "${{SECRETS.KUBE_CONFIG}}" > ~/.Kube/config
+           mkdir ~/.kube 
+           echo "${{SECRETS.KUBE_CONFIG}}" > ~/.kube/config
            k apply -f kubernetesdeploymentfile.yaml
            k get deployments
            
