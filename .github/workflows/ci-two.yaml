@@ -42,7 +42,7 @@ jobs:
       run: | 
             mkdir -p ~/.kube 
             echo "${{secrets.KUBE_CONFIG}}" > ~/.kube/config
-            kubectl apply -f kubernetesdeploymentfile.yaml --validate=false
+            kubectl apply -f kdep.yaml --validate=false
             kubectl get deployments
            
       
